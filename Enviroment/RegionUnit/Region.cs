@@ -7,9 +7,6 @@ namespace Biology.Enviroment.RegionUnit
 {
     public class Region
     {
-
-        // Temp
-        // Energy Support -- how much this region can support
         internal int CarryingCapacity { get; set; } = 100;
         internal int MaxEnergy { get; set; } = 100;
         internal int EnergyRefreshTime { get; set; } = 4;
@@ -22,7 +19,7 @@ namespace Biology.Enviroment.RegionUnit
             CarryingCapacity = carryingCapacity;
             MaxEnergy = maxEnergy;
             EnergyRefreshTime = energyRefreshTime;
-            CurrentStatus = Enum.GetValues<Status>().ElementAtOrDefault(status);
+            CurrentStatus = Enum.GetValues<Status>().ElementAtOrDefault(status); // Could use this to randomize
             MaxChambers = maxChambers;
             
 
@@ -53,7 +50,12 @@ namespace Biology.Enviroment.RegionUnit
             }
         }
 
-       
+        internal struct RegionLocation
+        {
+            internal int X { get; set; }
+            internal int Y { get; set; }
+        }
+
         public enum Status
         {
             Cold,

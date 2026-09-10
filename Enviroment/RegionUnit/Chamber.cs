@@ -13,10 +13,14 @@ internal class Chamber
 	}
 
 
-	internal void FillChamber(object passedinobj)
+	internal void FillChamber(object passedinobj) // may be obselete 
 	{
 		currentobj = passedinobj;
 	}
 
-	
+	internal struct ChamberLocation
+	{
+		internal int X { get; set; }
+		internal int Y { get; set; }
+	}
 }

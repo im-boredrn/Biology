@@ -11,6 +11,8 @@ namespace Biology.Enviroment.CellUnit
 
         public  Traits Traits { get; set; }
         public string ID => "Cell";
+       
+
         public EnergyData Energy { get; set; }
 
   
@@ -39,6 +41,11 @@ namespace Biology.Enviroment.CellUnit
             public int EnergyUsage { get; set; }
         }
 
+        internal struct Location
+        {
+            internal int X { get; set; }
+            internal int Y { get; set; }
+        }
 
         public void SeekFood()
         {
