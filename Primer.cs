@@ -4,17 +4,49 @@ RealEnviroment env1 = new();
 
 env1.KickOff();
 env1.Tick();
-Console.WriteLine("Read Cells?");
+Console.WriteLine("Inspect?");
+Console.WriteLine("E for enviroment,R for regions, C for Cells, S to save");
 
 char result = Console.ReadKey().KeyChar;
 
-if (result == 'Y' || result == 'y')
+
+
+if (result == 'E' || result == 'e')
 {
-    Console.WriteLine("\nReading Cells!");
+    Console.WriteLine("\nReading Enviroment!\n");
+
+
+    env1.DisplayRegionInfo();
+}
+if (result == 'R' || result == 'r')
+{
+    Console.WriteLine("\nReading Regions!");
+
+
+    foreach (var (id, region) in env1.ManagedRegions)
+    {
+        region.DisplayChamberInfo();
+    }
+}
+
+if (result == 'C' || result == 'c')
+{
+    Console.WriteLine("\nReading Regions!");
 
 
     foreach (var (name, region) in env1.ManagedRegions)
     {
     }
 }
+
+if (result == 'S' || result == 's')
+{
+    Console.WriteLine("\n Saving Enviroment!");
+
+
+  
+}
+
+
+
 

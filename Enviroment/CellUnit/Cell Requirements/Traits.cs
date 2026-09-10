@@ -4,10 +4,13 @@ using System.Text;
 
 namespace Biology.Cell_Requirements
 {
-    public class Traits
+    internal class Traits( List<Traits.PossibleTraits>? inheritedTraits)
     {
+        public List<Traits.PossibleTraits> CurrentTraits = [];
+        internal List<Traits.PossibleTraits>? StartingTraits = inheritedTraits;
 
-        public enum PTraits
+
+        public enum PossibleTraits
         {
             Fertile,
             Infertile,

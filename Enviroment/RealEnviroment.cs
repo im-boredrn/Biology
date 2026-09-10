@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Biology.Enviroment.CellUnit;
+using Biology.Enviroment.RegionUnit;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,73 +9,83 @@ namespace Biology.Enviroment
     internal class RealEnviroment
     {
         int  MaxRegions { get; set; } = 4;
+        internal CellManager CellManager { get; }
 
-
-        public Dictionary<string,Region> ManagedRegions = [];
+        public Dictionary<int,Region> ManagedRegions = [];
         public RealEnviroment()
         {
-            for (int i = 0; i < MaxRegions; i++)
+            if (ManagedRegions.Count == 0)
             {
-                string regionName = $"region {i}";
-
-                Region region = new (i * 2, i * 2, i * 2, i);
-
-
-                ManagedRegions.Add(regionName,region);
+                PopulateWorld();
             }
+            CellManager = new();
 
             
+        }
+
+        private void PopulateWorld()
+        {
+
+            for (int i = 0; i < MaxRegions; i++)
+            {
+                string regionName = $"region #{i}";
+
+                Region region = new(i * 2, i * 2, i * 2, i, i * 2); // eventually randomize .then with seed or something like settings
+
+
+                ManagedRegions.Add(i, region);
+            }
+
         }
 
         public void KickOff()
         {
-
-            foreach (var (regionName, region) in ManagedRegions)
-            region.SpawnLife(2);
+           foreach (var cell in CellManager.Cells)
+            {
+                ManagedRegions[1].ManagedChambers[1].FillChamber(cell);
+            }
         }
 
         public void Tick()
         {
-            Console.WriteLine($"MaxRegions : {MaxRegions}");
 
-            foreach (var (regionName, region)in ManagedRegions)
+            foreach (var (regionID, region)in ManagedRegions)
             {
-                DisplayRegionInfo(regionName, region);
-                SaveRegionInfo();
+                SaveEnviroment();
             }
 
         }
 
-        public void DisplayRegionInfo(string regionName, Region region)
+        public void DisplayRegionInfo()
         {
-            
-                Console.WriteLine($"{regionName}: {region.CurrentStatus}\n Current Cells :{region.Cells.Count} ");
-            
+            Console.WriteLine($"MaxRegions : {MaxRegions}\n--------------------------------");
 
+            foreach (var ( regionID, region) in ManagedRegions)
+            {
+                int id = regionID + 1;
+                Console.WriteLine($"#{id}: {region.CurrentStatus}\n" +
+                    $"Max Chambers :{region.MaxChambers} | Max Capacity {region.CarryingCapacity}\n" +
+                    $"--------------------------------");
 
-            // Those regions stats
+            }
         }
 
-        public void SaveRegionInfo()
+        public void SaveEnviroment()
         {
             using (var writer = new StreamWriter("regiondata.csv"))
             {
-                writer.Write("RegionName,Status");
+                writer.Write("RegionID,Status");
 
                 foreach (var (regionName, region) in ManagedRegions)
                 {
-                    writer.WriteLine($"{regionName},{region.CurrentStatus}");
+                    writer.WriteLine($"{regionName},{region.CurrentStatus},{region.ManagedChambers.Values}" +
+                        $",{region.EnergyRefreshTime}");
 
                 }
 
 
             }
 
-        }
-
-        public void DisplayCellInfo()
-        {
-            // use reflection
         }
     }
 }
