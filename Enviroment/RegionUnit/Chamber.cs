@@ -6,6 +6,8 @@ internal class Chamber
 
 	object? currentobj;
 
+	internal ChamberLocation Location { get; set; }
+
 	internal Chamber(object? obj)
 	{
 		currentobj = obj;
@@ -18,9 +20,11 @@ internal class Chamber
 		currentobj = passedinobj;
 	}
 
-	internal struct ChamberLocation
+	internal struct ChamberLocation(int x,int y)
 	{
-		internal int X { get; set; }
-		internal int Y { get; set; }
+		internal int X { get; set; } = x;
+		internal int Y { get; set; } = y; 
+
+
 	}
 }

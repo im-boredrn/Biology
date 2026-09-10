@@ -28,13 +28,15 @@ namespace Biology.Enviroment
 
             for (int i = 0; i < MaxRegions; i++)
             {
-                string regionName = $"region #{i}";
 
                 Region region = new(i * 2, i * 2, i * 2, i, i * 2); // eventually randomize .then with seed or something like settings
 
+                int quad = i ;
+                region.Quadrant = new Region.RegionQuadrant(quad) ;
 
                 ManagedRegions.Add(i, region);
             }
+
 
         }
 
@@ -49,10 +51,7 @@ namespace Biology.Enviroment
         public void Tick()
         {
 
-            foreach (var (regionID, region)in ManagedRegions)
-            {
-                SaveEnviroment();
-            }
+          
 
         }
 
@@ -65,6 +64,7 @@ namespace Biology.Enviroment
                 int id = regionID + 1;
                 Console.WriteLine($"#{id}: {region.CurrentStatus}\n" +
                     $"Max Chambers :{region.MaxChambers} | Max Capacity {region.CarryingCapacity}\n" +
+                    $"Quadrant : {id }\n" +
                     $"--------------------------------");
 
             }
@@ -72,17 +72,20 @@ namespace Biology.Enviroment
 
         public void SaveEnviroment()
         {
-            using (var writer = new StreamWriter("regiondata.csv"))
+            using (var writer = new StreamWriter("enviromentdata.csv"))
             {
-                writer.Write("RegionID,Status");
+                writer.Write("RegionID,Status,ManagedChambers,EnergyRefreshTime,MC,Quadrant\n");
 
-                foreach (var (regionName, region) in ManagedRegions)
+                foreach (var (regionID, region) in ManagedRegions)
                 {
-                    writer.WriteLine($"{regionName},{region.CurrentStatus},{region.ManagedChambers.Values}" +
-                        $",{region.EnergyRefreshTime}");
+                    int id = regionID + 1;
+
+                    writer.WriteLine($"{id},{region.CurrentStatus},{region.ManagedChambers.Count}" +
+                        $",{region.EnergyRefreshTime},{region.CarryingCapacity},{id}");
+
+                    region.SaveChambers();
 
                 }
-
 
             }
 

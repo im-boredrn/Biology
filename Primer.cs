@@ -31,10 +31,10 @@ if (result == 'R' || result == 'r')
 
 if (result == 'C' || result == 'c')
 {
-    Console.WriteLine("\nReading Regions!");
+    Console.WriteLine("\nReading Cells!");
 
 
-    foreach (var (name, region) in env1.ManagedRegions)
+    foreach (var (cellID, cell) in env1.CellManager.Cells)
     {
     }
 }
@@ -43,7 +43,7 @@ if (result == 'S' || result == 's')
 {
     Console.WriteLine("\n Saving Enviroment!");
 
-
+    env1.SaveEnviroment();
   
 }
 
