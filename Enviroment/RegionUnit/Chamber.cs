@@ -4,21 +4,16 @@ using System;
 internal class Chamber
 {
 
-	object? currentobj;
 
 	internal ChamberLocation Location { get; set; }
 
-	internal Chamber(object? obj)
+	internal Chamber()
 	{
-		currentobj = obj;
 		//ChamberContentNames
 	}
 
 
-	internal void FillChamber(object passedinobj) // may be obselete 
-	{
-		currentobj = passedinobj;
-	}
+	
 
 	internal struct ChamberLocation(int x,int y)
 	{

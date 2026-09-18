@@ -35,7 +35,7 @@ namespace Biology.Enviroment.RegionUnit
         {
             for (int i = 0; i < MaxChambers; i++)
             {
-                var chamber = new Chamber(null);
+                var chamber = new Chamber();
                 int key = ManagedChambers.Count;
                 int id = key += 1;
                 ManagedChambers.Add(id, chamber);
@@ -81,12 +81,13 @@ namespace Biology.Enviroment.RegionUnit
         internal void SaveChambers()
         {
 
-            using (var writer = new StreamWriter("regiondata.csv", append: true)) // overwriting each other
+            using (var writer = new StreamWriter("regiondata.csv", append: true)) 
             {
+                writer.Write("ChamberID,X,Y,Quadrant\n");
+
                 foreach (var (id, chamber) in ManagedChambers)
                 {
 
-                    writer.Write("ChamberID,X,Y,Quadrant\n");
 
                     int quad = this.Quadrant._quadrant + 1;
                     

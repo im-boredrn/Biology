@@ -90,5 +90,13 @@ namespace Biology.Enviroment
             }
 
         }
+
+        public void LoadEnviroment()
+        {
+            using (var reader = new StreamReader("enviromentdata.csv"))
+            {
+
+            }
+        }
     }
 }

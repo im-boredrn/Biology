@@ -51,6 +51,7 @@ namespace Biology.Enviroment.CellUnit
 
             key += 1;
             Cells.Add(key, cell);
+            Cells[key].AssignLocation(1, 1);
 
         }
 

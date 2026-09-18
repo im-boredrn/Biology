@@ -14,7 +14,7 @@ namespace Biology.Enviroment.CellUnit
        
 
         public EnergyData Energy { get; set; }
-
+        public Location CellLocation { get; set; }
   
         // if null then no traits are passed down
         public Cell(Traits? traits)
@@ -41,24 +41,44 @@ namespace Biology.Enviroment.CellUnit
             public int EnergyUsage { get; set; }
         }
 
-        internal struct Location
+        internal struct Location(int x, int y)
         {
-            internal int X { get; set; }
-            internal int Y { get; set; }
+            internal int X { get; set; } = x;
+            internal int Y { get; set; } = y;
         }
 
         public void SeekFood()
         {
             if (!HasEnergy()) return ;
-
-
+            //Scan for food -- if food found move
+            
         }
 
         public void Move()
         {
             // if you have energy move a chamber.
             if (!HasEnergy()) return;
+            
+            if (CanMove())
+            {
+                int x = CellLocation.X;
+                int y = CellLocation.Y ;
+
+                CellLocation = new Location(x + 1, y + 1);
+            }
             // called when you want to seek food or a mate.
+        }
+
+        public bool CanMove()
+        {
+            if (CellLocation.X <= 4 && CellLocation.Y <= 4)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public bool SeekMate()
@@ -80,12 +100,16 @@ namespace Biology.Enviroment.CellUnit
 
         private void Scan()
         {
-            // scan chambers depending on perception level.
+            // return picked up objects and their pos.
+            // Different method : If object is desired i.e. food or mate then move towards it. 
+            // if nothing is picked up then move around and keep scanning. Alternating between +x and +y and -x and -y when border is hit.
         }
 
-        internal void AssignLocation()
-        {
+      
 
+        internal void AssignLocation(int x, int y)
+        {
+            CellLocation = new Location(x, y);
         }
 
         internal void DisplayStats()
