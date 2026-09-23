@@ -3,18 +3,57 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using Biology.Enviroment.CellUnit.Cell_Requirements;
 
 namespace Biology.Enviroment.CellUnit
 {
     internal class Cell
     {
 
-        public  Traits Traits { get; set; }
-        public string ID => "Cell";
-       
+        public Traits Traits { get; set; }
+        private readonly int ChildrenAmount;
+
+        public enum HungerStatus //1
+        {
+            LowHunger,
+            FineHunger,
+            FullHunger
+        }
+
+        public enum EnergyStatus
+        {
+            LowEnergy,
+            FineEnergy,
+            FullEnergy
+        }
+
+        public enum ReproductionStatus
+        {
+            NoChildren,
+            FewChildren,
+            ManyChildren
+        }
+        public enum TemperatureStatus
+        {
+            Cold,
+            Hot,
+            Warm
+        }
+
+        public enum CurrentState
+        {
+            SeekingMate,
+            SeekingFood,
+            Resting,
+            Eating
+        }
+
+        public CurrentState currentState; 
 
         public EnergyData Energy { get; set; }
         public Location CellLocation { get; set; }
+        public CellPos Pos { get; set; }
+        private readonly int FoodLVL;
   
         // if null then no traits are passed down
         public Cell(Traits? traits)
@@ -41,18 +80,72 @@ namespace Biology.Enviroment.CellUnit
             public int EnergyUsage { get; set; }
         }
 
+
         internal struct Location(int x, int y)
         {
             internal int X { get; set; } = x;
             internal int Y { get; set; } = y;
         }
 
-        public void SeekFood()
+        internal void SetState(CurrentState newState)
         {
-            if (!HasEnergy()) return ;
-            //Scan for food -- if food found move
+            currentState = newState;
+        }
+
+        public HungerStatus GetHunger()
+        {
+          if (FoodLVL <= 20)
+            {
+                return HungerStatus.LowHunger;
+            }
+          if ( FoodLVL <= 100)
+            {
+                return HungerStatus.FineHunger;
+            }
+                return HungerStatus.FullHunger;
             
         }
+
+        public EnergyStatus GetEnergy()
+        {
+            if (Energy.EnergyLVL <= 20)
+            {
+                return EnergyStatus.LowEnergy;
+            }
+            if (Energy.EnergyLVL <= 100)
+            {
+                return EnergyStatus.FineEnergy;
+            }
+            return EnergyStatus.FullEnergy;
+
+        }
+        public ReproductionStatus GetReproduction()
+        {
+            if (ChildrenAmount == 0)
+            {
+                return ReproductionStatus.NoChildren;
+            }
+            if (ChildrenAmount <= 20)
+            {
+                return ReproductionStatus.FewChildren;
+            }
+            return ReproductionStatus.ManyChildren;
+
+        }
+
+        //public TemperatureStatus GetTemperature()
+        //{
+        //    if (FoodLVL <= 20)
+        //    {
+        //        return HungerStatus.LowHunger;
+        //    }
+        //    if (FoodLVL <= 100)
+        //    {
+        //        return HungerStatus.FineHunger;
+        //    }
+        //    return HungerStatus.FullHunger;
+
+        //}
 
         public void Move()
         {
@@ -98,7 +191,7 @@ namespace Biology.Enviroment.CellUnit
             
         }
 
-        private void Scan()
+        private void Scan() // Ignore / not possible with architecture
         {
             // return picked up objects and their pos.
             // Different method : If object is desired i.e. food or mate then move towards it. 

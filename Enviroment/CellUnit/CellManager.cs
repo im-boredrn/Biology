@@ -16,21 +16,21 @@ namespace Biology.Enviroment.CellUnit
                 CreateCell();
             }
 
-            WireEvents();
+            //WireEvents();
         }
 
-        public void WireEvents()
-        {
-            foreach (var cell in Cells)
-            {
-                cell.Value.PassDownTraits += (trait)  =>
-                {
-                    ReproduceCell(trait);
-                };
-            }
+        //public void WireEvents()
+        //{
+        //    foreach (var cell in Cells)
+        //    {
+        //        cell.Value.PassDownTraits += (trait)  =>
+        //        {
+        //            ReproduceCell(trait);
+        //        };
+        //    }
             
             
-        }
+        //}
 
         private void ReproduceCell(Traits traits)
         {
@@ -42,7 +42,24 @@ namespace Biology.Enviroment.CellUnit
 
         }
 
-        
+        private void DecidePriority()
+        {
+            foreach (var cell in Cells)
+            {
+                if (cell.Value.GetHunger() == Cell.HungerStatus.LowHunger)
+                {
+                    return; // Return Hunger at the top of the list.
+                }
+            }
+
+            // if hunger is fine and energy is fine then target the lows first
+            //Hunger
+            //Energy
+            //Reproduction
+
+        }
+
+
 
         private void CreateCell()
         {

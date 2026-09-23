@@ -8,6 +8,8 @@ namespace Biology.Enviroment
 {
     internal class RealEnviroment
     {
+        //Pos movers and world alterers need to be here
+        // Cell shouldn't be able to alter above it.
         int  MaxRegions { get; set; } = 4;
         internal CellManager CellManager { get; }
 
@@ -42,10 +44,7 @@ namespace Biology.Enviroment
 
         public void KickOff()
         {
-           foreach (var cell in CellManager.Cells)
-            {
-                ManagedRegions[1].ManagedChambers[1].FillChamber(cell);
-            }
+         
         }
 
         public void Tick()
@@ -53,6 +52,19 @@ namespace Biology.Enviroment
 
           
 
+        }
+
+        private void ProximityTracker() // Reads Current Pos of EVERY object in the world.
+        {
+            // if two objects are one chamber away then they are touching.
+        }
+
+        private void CollisionTracker()
+        {
+            foreach (var cell in CellManager.Cells)
+            {
+                cell.Value.Pos.X
+            }
         }
 
         public void DisplayRegionInfo()
