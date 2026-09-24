@@ -16,21 +16,42 @@ namespace Biology.Enviroment.CellUnit
                 CreateCell();
             }
 
-            //WireEvents();
+            WireEvents();
         }
 
-        //public void WireEvents()
-        //{
-        //    foreach (var cell in Cells)
-        //    {
-        //        cell.Value.PassDownTraits += (trait)  =>
-        //        {
-        //            ReproduceCell(trait);
-        //        };
-        //    }
-            
-            
-        //}
+        public void WireEvents()
+        {
+            foreach (var cell in Cells)
+            {
+                cell.Value.PassDownTraits += (trait) =>
+                {
+                    ReproduceCell(trait);
+                };
+
+                cell.Value.SetState(DecidePriority(cell.Value));
+            }
+
+
+        }
+
+        public void Cycle()
+        {
+            foreach (var cell in Cells)
+            {
+               
+
+                cell.Value.SetState(DecidePriority(cell.Value));
+            }
+
+        }
+
+        public enum CurrentState
+        {
+            SeekingMate,
+            SeekingFood,
+            Resting,
+            Eating
+        }
 
         private void ReproduceCell(Traits traits)
         {
@@ -42,20 +63,40 @@ namespace Biology.Enviroment.CellUnit
 
         }
 
-        private void DecidePriority()
+        private static CurrentState DecidePriority( Cell cell)
         {
-            foreach (var cell in Cells)
-            {
-                if (cell.Value.GetHunger() == Cell.HungerStatus.LowHunger)
+            
+                if (cell.GetHunger() == Cell.HungerStatus.LowHunger)
                 {
-                    return; // Return Hunger at the top of the list.
+                    return CurrentState.SeekingFood; 
                 }
-            }
 
+                if (cell.GetEnergy() == Cell.EnergyStatus.LowEnergy)
+                {
+                    return CurrentState.Resting; 
+                }
             // if hunger is fine and energy is fine then target the lows first
-            //Hunger
-            //Energy
-            //Reproduction
+
+
+
+            if (cell.GetReproduction() == Cell.ReproductionStatus.NoChildren)
+                {
+                    return CurrentState.SeekingMate; 
+                }
+
+            return CurrentState.Resting;
+
+            //if (cell.GetEnergy() == Cell.EnergyStatus.FineEnergy)
+            //{
+            //    return CurrentState.S;
+            //}
+
+
+            //if (cell.GetReproduction() == Cell.ReproductionStatus.NoChildren)
+            //{
+            //    return CurrentState.SeekingMate;
+            //}
+
 
         }
 
@@ -81,7 +122,7 @@ namespace Biology.Enviroment.CellUnit
         {
             foreach (var (id, cell) in Cells)
             {
-                Console.WriteLine($"#{id} , idk ");
+                Console.WriteLine($"#{id} , {cell.GetHunger()}, {cell.GetEnergy()}, {cell.GetReproduction()}");
             }
         }
     }

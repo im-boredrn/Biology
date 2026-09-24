@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using Biology.Enviroment.CellUnit.Cell_Requirements;
-
+using CurrentState = Biology.Enviroment.CellUnit.CellManager.CurrentState;
 namespace Biology.Enviroment.CellUnit
 {
     internal class Cell
@@ -40,13 +40,7 @@ namespace Biology.Enviroment.CellUnit
             Warm
         }
 
-        public enum CurrentState
-        {
-            SeekingMate,
-            SeekingFood,
-            Resting,
-            Eating
-        }
+      
 
         public CurrentState currentState; 
 

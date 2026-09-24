@@ -34,7 +34,7 @@ namespace Biology.Enviroment
                 Region region = new(i * 2, i * 2, i * 2, i, i * 2); // eventually randomize .then with seed or something like settings
 
                 int quad = i ;
-                region.Quadrant = new Region.RegionQuadrant(quad) ;
+                region.Quadrant = new Region.RegionQuadrant(quad) ; // Treat each quadrant as a coordinate plane. Somehow.
 
                 ManagedRegions.Add(i, region);
             }
@@ -49,7 +49,7 @@ namespace Biology.Enviroment
 
         public void Tick()
         {
-
+            CellManager.Cycle();
           
 
         }
@@ -61,10 +61,9 @@ namespace Biology.Enviroment
 
         private void CollisionTracker()
         {
-            foreach (var cell in CellManager.Cells)
-            {
-                cell.Value.Pos.X
-            }
+          if (ManagedRegions.Get) // Omg get their positions in an array.
+
+                    // Get Cell positions in an array and cross match.
         }
 
         public void DisplayRegionInfo()
