@@ -4,22 +4,15 @@ using System;
 internal class Chamber
 {
 
-
-	internal ChamberLocation Location { get; set; }
+	internal int X;
+	internal int Y; // couldn't modify individual coords easily with struct.
 
 	internal Chamber()
 	{
-		//ChamberContentNames
 	}
 
 
 	
 
-	internal struct ChamberLocation(int x,int y)
-	{
-		internal int X { get; set; } = x;
-		internal int Y { get; set; } = y; 
-
-
-	}
+	
 }

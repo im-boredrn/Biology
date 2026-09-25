@@ -1,6 +1,7 @@
 ﻿using Biology.Cell_Requirements;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Text;
 
@@ -13,15 +14,14 @@ namespace Biology.Enviroment.RegionUnit
         internal int EnergyRefreshTime { get; set; } = 4;
         public Status CurrentStatus;// make random
         internal RegionQuadrant Quadrant { get; set; }
-        public int MaxChambers; //Def
+        public int MaxChambers = 25; //Def
         internal Dictionary<int, Chamber> ManagedChambers = []; // State
-        internal Region (int carryingCapacity, int maxEnergy, int energyRefreshTime, int status, int maxChambers)
+        internal Region (int carryingCapacity, int maxEnergy, int energyRefreshTime, int status)
         {
             CarryingCapacity = carryingCapacity;
             MaxEnergy = maxEnergy;
             EnergyRefreshTime = energyRefreshTime;
             CurrentStatus = Enum.GetValues<Status>().ElementAtOrDefault(status); // Could use this to randomize
-            MaxChambers = maxChambers;
             
 
             if (ManagedChambers.Count == 0)
@@ -31,24 +31,38 @@ namespace Biology.Enviroment.RegionUnit
            
         }
 
-        private void PopulateRegion()
+        private void PopulateRegion() // 1. Create Chambers along width 2. Go up a level and repeat
         {
-            for (int i = 0; i < MaxChambers; i++)
-            {
-                var chamber = new Chamber();
-                int key = ManagedChambers.Count;
-                int id = key += 1;
-                ManagedChambers.Add(id, chamber);
+            double chamberWidth = Math.Sqrt(MaxChambers);
+            double chamberHeight = Math.Sqrt(MaxChambers);
+            // for each row colomn starts at 0 and goes up.
 
-                if (i <= 2)
+            for (int row = 0; row < chamberHeight; row++)
+            {
+                for (int column = 0; column < chamberWidth; column++) // Pop Column
                 {
-                    ManagedChambers[id].Location = new Chamber.ChamberLocation(1,i);
-                }
-                else if (i >= 3)
-                {
-                    ManagedChambers[id].Location = new Chamber.ChamberLocation(2, i);
-                }
+                    var chamber = new Chamber();
+                    int key = ManagedChambers.Count; // at the end it should be 5
+                    int id = key += 1; // 1 at start
+                    ManagedChambers.Add(id, chamber);
+
+
+                    ManagedChambers[id].X = column;
+                    ManagedChambers[id].Y = row;
+
+
+
+
+
+                    // once I passes sqrt of MaxWidth move up
+
+                } // when the for loop ends that means a column was populated.
+                row++;
             }
+            
+
+          
+
         }
 
         internal void DisplayChamberInfo()
@@ -56,7 +70,7 @@ namespace Biology.Enviroment.RegionUnit
 
             foreach (var (id, chamber) in ManagedChambers)
             {
-                Console.WriteLine($"#{id}, X : {chamber.Location.X}, Y : {chamber.Location.Y}, Region :{this.Quadrant._quadrant}\n");
+                Console.WriteLine($"#{id}, X : {chamber.X}, Y : {chamber.Y}, Region :{this.Quadrant._quadrant}\n");
             }
         }
 
@@ -92,7 +106,7 @@ namespace Biology.Enviroment.RegionUnit
 
                     int quad = this.Quadrant._quadrant + 1;
                     
-                    writer.WriteLine($"{id},{chamber.Location.X},{chamber.Location.Y}" +
+                    writer.WriteLine($"{id},{chamber.X},{chamber.Y}" +
                         $",{quad}");
 
 

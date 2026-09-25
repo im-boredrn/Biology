@@ -11,6 +11,7 @@ namespace Biology.Enviroment
         //Pos movers and world alterers need to be here
         // Cell shouldn't be able to alter above it.
         int  MaxRegions { get; set; } = 4;
+        readonly int[] RegionCoords;
         internal CellManager CellManager { get; }
 
         public Dictionary<int,Region> ManagedRegions = [];
@@ -31,7 +32,7 @@ namespace Biology.Enviroment
             for (int i = 0; i < MaxRegions; i++)
             {
 
-                Region region = new(i * 2, i * 2, i * 2, i, i * 2); // eventually randomize .then with seed or something like settings
+                Region region = new(i * 2, i * 2, i * 2, i); // eventually randomize .then with seed or something like settings
 
                 int quad = i ;
                 region.Quadrant = new Region.RegionQuadrant(quad) ; // Treat each quadrant as a coordinate plane. Somehow.
@@ -61,7 +62,7 @@ namespace Biology.Enviroment
 
         private void CollisionTracker()
         {
-          if (ManagedRegions.Get) // Omg get their positions in an array.
+         // if (ManagedRegions.Get) // Omg get their positions in an array.
 
                     // Get Cell positions in an array and cross match.
         }
